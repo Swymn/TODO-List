@@ -1,9 +1,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
+const appDir = __dirname + "/app/";
+const date = require(appDir + "date.js");
+
 const app = express();
 
-let items = ["Buy Food", "Cook Food", "Eat Food"];
+const ITEMS = ["Buy Food", "Cook Food", "Eat Food"];
+const WORK_ITEMS = [];
 
 app.set("view engine", "ejs");
 
@@ -12,24 +16,41 @@ app.use(express.static("public"));
 
 app.get("/", function (req, res) {
 
-    let options = {
-        weekday: "long",
-        day: "numeric",
-        month: "long"
-    }
+    const day = date.getDate();
 
     res.render("list", {
-        kindOfDay: new Date().toLocaleDateString("en-US", options),
-        itemList: items
+        listTitle: day,
+        itemList: ITEMS
+    });
+});
+
+app.get("/work", function (req, res) {
+
+    res.render("list", {
+        listTitle: "Work List",
+        itemList: WORK_ITEMS
     });
 });
 
 app.post("/", function (req, res) {
 
-    items.push(req.body.newItem);
+    const list = req.body.list;
+    const item = req.body.newItem;
 
-    res.redirect("/");
+    function addItemAndRedirect(list, routes) {
+        list.push(item);
+        res.redirect(routes);
+    }
 
-})
+    switch (list) {
+        case "Work List":
+            addItemAndRedirect(WORK_ITEMS, "/work");
+            break;
+
+        default:
+            addItemAndRedirect(ITEMS, "/");
+            break;
+    }
+});
 
 app.listen(3000, () => console.log("Server started on port 3000"));
