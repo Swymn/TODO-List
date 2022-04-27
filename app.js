@@ -6,6 +6,8 @@ const appDir = __dirname + "/app/";
 const date = require(appDir + "date.js");
 const request = require(appDir + "request.js");
 
+const PORT = process.env.PORT || 3000;
+
 const { Item, List } = require(__dirname + "/model/Item.js");
 
 require("dotenv").config({ path: "./.env" });
@@ -98,4 +100,4 @@ app.post("/delete", (req, res) => {
 
 });
 
-app.listen(3000, () => console.log("Server started on port 3000"));
+app.listen(PORT, () => console.log("Server started on port" + PORT));
