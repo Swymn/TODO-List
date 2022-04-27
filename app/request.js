@@ -17,12 +17,12 @@ const defaultItemsArray = [
 
 const openConnexion = () => {
 
-    mongoose.connect(process.env.URI + "/" + process.env.DB_NAME)
+    mongoose.connect(process.env.URI)
         .then(() => {
             console.log("Connected!");
         })
-        .catch(() => {
-            console.log("Something went wrong when trying to connect to the DB.");
+        .catch((err) => {
+            console.log("Something went wrong when trying to connect to the DB." + err);
         });
 }
 

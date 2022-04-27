@@ -87,6 +87,7 @@ app.post("/delete", (req, res) => {
 
     if (list === day) {
         request.deleteItem(item);
+        res.redirect("/");
     } else {
         List.findOneAndUpdate({ name: list}, {$pull: {items: {_id: item}}}, (err) => {
             if (err)
@@ -100,4 +101,4 @@ app.post("/delete", (req, res) => {
 
 });
 
-app.listen(PORT, () => console.log("Server started on port" + PORT));
+app.listen(PORT, () => console.log("Server started on port " + PORT));
